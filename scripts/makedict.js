@@ -1,8 +1,11 @@
 const readline = require('readline')
+const fs = require('fs')
+const argv = require('minimist')(process.argv.slice(2))
 const { v4: uuidv4 } = require('uuid')
 
 const rl = readline.createInterface({
-  input: process.stdin
+  input: fs.createReadStream(argv.f),
+  crlfDelay: Infinity
 })
 
 rl.on('line', (data => {
@@ -22,15 +25,19 @@ rl.on('line', (data => {
     return
   }
   // слово для перевода всегда идет первым (то есть по индексу 0)
+  // остальные слова это переводы (dst)
   const [src, ...dst] = tokens
-
+  // инициализация об'екта английского слова-источника
   const srcWord = { id: uuidv4(), value: src }
-  const dstWords = dst.map((word) => ({ id: uuidv4(), value: word }))
-
-  dstWords.forEach((word) => {
-    // генерация кода вставки в таблицу маппинга
-    console.log(`INSERT INTO dict_map(src_id, dst_id) VALUES('${srcWord.id}', '${word.id}');`)
-    // генерация в таблицу русского словаря
-    console.log(`INSERT INTO dict_ru_en(id, word) VALUES('${word.id}', '${word.value}');`)
+  // инициализация об'ектов слов-переводов английского слова источника
+  const translations = dst.map((word) => ({ id: uuidv4(), value: word }))
+  // Генерация кода для вставки в таблицу английского словаря
+  console.log(`INSERT INTO dict_en(id, word) VALUES('${srcWord.id}', '${srcWord.value}');`)
+  // проход по всем словам перевода (для srcWord)
+  translations.forEach((word) => {
+    // генерация кода вставки в таблицу русского словаря
+    console.log(`INSERT INTO dict_ru(id, word) VALUES('${word.id}', '${word.value}');`)
+    // генерация кода вставки в таблицу маппинга ru_en
+    console.log(`INSERT INTO dict_map_en_ru(id_en, id_ru) VALUES('${srcWord.id}', '${word.id}');`)
   })
 }))
