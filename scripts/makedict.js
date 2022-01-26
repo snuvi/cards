@@ -30,6 +30,7 @@ rl.on('line', (data => {
   dstWords.forEach((word) => {
     // генерация кода вставки в таблицу маппинга
     console.log(`INSERT INTO dict_map(src_id, dst_id) VALUES('${srcWord.id}', '${word.id}');`)
+    // генерация в таблицу русского словаря
     console.log(`INSERT INTO dict_ru_en(id, word) VALUES('${word.id}', '${word.value}');`)
   })
 }))
