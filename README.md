@@ -1,5 +1,5 @@
 # cards
-## Генерация SQL для загрузки словарей
+## Генерация SQL для загрузки словарей (стоим уровнем выше чем каталог dict)
 ```sql
 find dict -not -name "* all" -not -type d -exec node scripts/makedict.js -f {} \; > inserts.sql
 ```
