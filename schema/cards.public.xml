@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="cards" schema="public" type="PostgreSQL - 13.5">
+   <tables>
+      <table name="dict_en" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid">
+            <child column="id_en" foreignKey="fk_dict_en" implied="false" onDeleteCascade="false" table="dict_map_en_ru"/>
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="dict_ru"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="word" nullable="false" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="dict_en_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="dict_map_en_ru" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id_en" nullable="false" remarks="" size="2147483647" type="uuid">
+            <parent column="id" foreignKey="fk_dict_en" implied="false" onDeleteCascade="false" table="dict_en"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="id_ru" nullable="false" remarks="" size="2147483647" type="uuid">
+            <parent column="id" foreignKey="fk_dict_ru" implied="false" onDeleteCascade="false" table="dict_ru"/>
+         </column>
+      </table>
+      <table name="dict_ru" numRows="0" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="2147483647" type="uuid">
+            <child column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" table="dict_en"/>
+            <child column="id_ru" foreignKey="fk_dict_ru" implied="false" onDeleteCascade="false" table="dict_map_en_ru"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="word" nullable="false" remarks="" size="2147483647" type="text"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="dict_ru_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+   </tables>
+</database>
